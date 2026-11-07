@@ -1,4 +1,5 @@
 # JobGuard
+<<<<<<< HEAD
 
 JobGuard is a machine-learning-powered web application that helps job seekers identify potentially fraudulent job postings and analyze resume skill gaps.
 
@@ -85,3 +86,6 @@ Open http://127.0.0.1:5000/ in your browser.
 
 Computer Science and Engineering Student  
 Haldia Institute of Technology
+=======
+ML-powered job scam detection and resume skill gap analyzer.
+>>>>>>> d075d2aa112fd9432b7e8d2f9ac571513a2d5614
