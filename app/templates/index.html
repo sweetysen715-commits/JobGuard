@@ -1,0 +1,272 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JobGuard | Job Scam Detection</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f3f6fb;
+            color: #243247;
+        }
+
+        header {
+            background: #17365d;
+            color: white;
+            padding: 24px 8%;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 30px;
+        }
+
+        header p {
+            margin-bottom: 0;
+            color: #d8e5f5;
+        }
+
+        .container {
+            max-width: 850px;
+            margin: 35px auto;
+            padding: 0 20px;
+        }
+
+        .card {
+            background: white;
+            padding: 28px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.06);
+            margin-bottom: 25px;
+        }
+
+        h2 {
+            color: #17365d;
+            margin-top: 0;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            margin: 17px 0 7px;
+        }
+
+        input, textarea, select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ccd5e0;
+            border-radius: 7px;
+            font-size: 15px;
+        }
+
+        textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        button {
+            width: 100%;
+            margin-top: 24px;
+            padding: 15px;
+            border: none;
+            border-radius: 7px;
+            background: #1765c1;
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #104d96;
+        }
+
+        .result {
+            border-left: 5px solid #1765c1;
+        }
+
+        .probability {
+            font-size: 38px;
+            font-weight: bold;
+            color: #1765c1;
+        }
+
+        .success {
+            color: #16834a;
+        }
+
+        .warning {
+            color: #c0392b;
+        }
+
+        .error {
+            color: #c0392b;
+            background: #fff0f0;
+            padding: 12px;
+            border-radius: 7px;
+        }
+
+        footer {
+            text-align: center;
+            padding: 25px;
+            color: #718096;
+        }
+        .navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 18px 30px;
+    background: #172554;
+    margin-bottom: 25px;
+}
+
+.navbar a {
+    color: white;
+    text-decoration: none;
+    margin-right: 20px;
+    font-weight: bold;
+}
+
+.navbar a:hover {
+    color: #93c5fd;
+}
+    </style>
+</head>
+
+<body>
+<nav class="navbar">
+    <a href="/">JobGuard</a>
+    <div>
+        <a href="/">Scam Detection</a>
+        <a href="/skills">Skill Gap Analyzer</a>
+    </div>
+</nav>
+<header>
+    <h1>JobGuard</h1>
+    <p>Smart Job Scam Detection System</p>
+</header>
+
+<div class="container">
+
+    <div class="card">
+        <h2>Analyze a Job Posting</h2>
+        <p>Enter job details to check whether a posting may be fraudulent.</p>
+
+        <form method="POST">
+
+            <label>Job Title *</label>
+            <input type="text" name="title" required>
+
+            <label>Company Profile</label>
+            <textarea name="company_profile"></textarea>
+
+            <label>Job Description *</label>
+            <textarea name="description" required></textarea>
+
+            <label>Requirements</label>
+            <textarea name="requirements"></textarea>
+
+            <label>Benefits</label>
+            <textarea name="benefits"></textarea>
+
+            <label>Salary Range</label>
+            <input type="text" name="salary_range"
+                   placeholder="Example: 30000-50000">
+
+            <label>Employment Type</label>
+            <select name="employment_type">
+                <option value="Unknown">Not specified</option>
+                <option>Full-time</option>
+                <option>Part-time</option>
+                <option>Contract</option>
+                <option>Temporary</option>
+                <option>Other</option>
+            </select>
+
+            <label>Required Experience</label>
+            <input type="text" name="required_experience"
+                   placeholder="Example: Entry level">
+
+            <label>Required Education</label>
+            <input type="text" name="required_education"
+                   placeholder="Example: Bachelor's Degree">
+
+            <label>Industry</label>
+            <input type="text" name="industry"
+                   placeholder="Example: Information Technology">
+
+            <label>Job Function</label>
+            <input type="text" name="function"
+                   placeholder="Example: Engineering">
+
+            <label>Location</label>
+            <input type="text" name="location"
+                   placeholder="Example: Kolkata, India">
+
+            <label>Telecommuting</label>
+            <select name="telecommuting">
+                <option value="0">No</option>
+                <option value="1">Yes</option>
+            </select>
+
+            <label>Company Logo Available?</label>
+            <select name="has_company_logo">
+                <option value="1">Yes</option>
+                <option value="0">No</option>
+            </select>
+
+            <label>Does the job posting have screening questions?</label>
+            <select name="has_questions">
+                <option value="1">Yes</option>
+                <option value="0">No</option>
+            </select>
+
+            <button type="submit">Analyze Job</button>
+
+        </form>
+    </div>
+
+    {% if result %}
+    <div class="card result">
+        <h2>Analysis Result</h2>
+
+        <h3 class="{% if result.prediction == 1 %}warning{% else %}success{% endif %}">
+            {{ result.label }}
+        </h3>
+
+        <div class="probability">
+            {{ result.fraud_probability }}%
+        </div>
+
+        <p>Estimated fraud probability</p>
+        <p>Decision threshold: {{ (result.threshold * 100)|round(2) }}%</p>
+        <p>
+            This is an ML-based estimate, not a guarantee.
+            Verify the employer independently before sharing
+            personal information or paying any fees.
+        </p>
+    </div>
+    {% endif %}
+
+    {% if error %}
+    <div class="card error">
+        {{ error }}
+    </div>
+    {% endif %}
+
+</div>
+
+<footer>
+    JobGuard | AI-powered Job Protection
+</footer>
+
+</body>
+</html>

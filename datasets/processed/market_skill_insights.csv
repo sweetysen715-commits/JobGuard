@@ -1,0 +1,46 @@
+skill,job_count,market_percentage
+Communication,2769,16.27
+Excel,1789,10.51
+JavaScript,1450,8.52
+Problem Solving,1345,7.91
+HTML,1170,6.88
+SQL,1071,6.29
+CSS,1044,6.14
+Java,893,5.25
+Linux,626,3.68
+MySQL,549,3.23
+Python,549,3.23
+Computer Vision,407,2.39
+Git,390,2.29
+C#,354,2.08
+C++,296,1.74
+AWS,264,1.55
+Statistics,237,1.39
+GitHub,196,1.15
+CI/CD,175,1.03
+Data Analysis,171,1.01
+MongoDB,168,0.99
+Django,132,0.78
+Machine Learning,130,0.76
+PostgreSQL,119,0.7
+Node.js,80,0.47
+Data Visualization,78,0.46
+Data Science,70,0.41
+Tableau,64,0.38
+React,63,0.37
+Microsoft Azure,52,0.31
+Artificial Intelligence,45,0.26
+Natural Language Processing,45,0.26
+REST API,42,0.25
+Docker,35,0.21
+Google Cloud,17,0.1
+Flask,12,0.07
+Deep Learning,10,0.06
+Probability,9,0.05
+Pandas,8,0.05
+NumPy,7,0.04
+Power BI,7,0.04
+Microservices,5,0.03
+Matplotlib,3,0.02
+Scikit-learn,2,0.01
+Spring Boot,1,0.01

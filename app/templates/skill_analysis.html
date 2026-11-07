@@ -1,0 +1,172 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JobGuard - Skill Gap Analyzer</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f3f6fb;
+            color: #243247;
+            margin: 0;
+        }
+        header {
+            background: #17365d;
+            color: white;
+            padding: 25px 8%;
+        }
+        .container {
+            max-width: 850px;
+            margin: 35px auto;
+            padding: 0 20px;
+        }
+        .card {
+            background: white;
+            padding: 28px;
+            border-radius: 12px;
+            margin-bottom: 22px;
+            box-shadow: 0 4px 15px rgba(0,0,0,.06);
+        }
+        h2, h3 { color: #17365d; }
+        label {
+            display: block;
+            font-weight: bold;
+            margin: 18px 0 8px;
+        }
+        input, textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ccd5e0;
+            border-radius: 7px;
+            box-sizing: border-box;
+        }
+        textarea { min-height: 160px; }
+        button {
+            width: 100%;
+            padding: 14px;
+            margin-top: 20px;
+            background: #1765c1;
+            color: white;
+            border: 0;
+            border-radius: 7px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        .score {
+            font-size: 36px;
+            font-weight: bold;
+            color: #1765c1;
+        }
+        .error { color: #c0392b; }
+        li { margin: 9px 0; }
+        a { color: white; }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+    <a href="/">JobGuard</a>
+    <div>
+        <a href="/">Scam Detection</a>
+        <a href="/skills">Skill Gap Analyzer</a>
+    </div>
+</nav>
+
+<header>
+    <h1>JobGuard</h1>
+    <p>Resume Skill Gap Analyzer</p>
+    <a href="/">Back to Scam Detection</a>
+</header>
+
+<div class="container">
+
+    <div class="card">
+        <h2>Analyze Your Skills</h2>
+
+        <form method="POST" enctype="multipart/form-data">
+
+            <label>Upload Resume (PDF or DOCX)</label>
+            <input type="file" name="resume"
+                   accept=".pdf,.docx" required>
+
+            <label>Paste Job Description</label>
+            <textarea name="job_description"
+                      placeholder="Paste the complete job description here..."
+                      required></textarea>
+
+            <button type="submit">Analyze Skill Gap</button>
+
+        </form>
+    </div>
+
+    {% if error %}
+    <div class="card error">
+        {{ error }}
+    </div>
+    {% endif %}
+
+    {% if result %}
+    <div class="card">
+        <h2>Analysis Results</h2>
+
+        <div class="score">{{ result.match_percentage }}%</div>
+        <p>Skill Match Percentage</p>
+
+        <h3>Career Readiness</h3>
+        <p>{{ result.career_readiness.readiness_score }}%</p>
+        <p>{{ result.career_readiness.readiness_level }}</p>
+
+        <h3>Matched Skills</h3>
+        <ul>
+            {% for skill in result.matched_skills %}
+            <li>
+                {{ skill.resume_skill }}
+                → {{ skill.required_skill }}
+                ({{ skill.match_type }})
+            </li>
+            {% else %}
+            <li>No matched skills found.</li>
+            {% endfor %}
+        </ul>
+
+        <h3>Missing Skills</h3>
+        <ul>
+            {% for skill in result.missing_skills %}
+            <li>{{ skill }}</li>
+            {% else %}
+            <li>No missing skills found.</li>
+            {% endfor %}
+        </ul>
+
+        <h3>Extra Skills</h3>
+        <ul>
+            {% for skill in result.extra_skills %}
+            <li>{{ skill }}</li>
+            {% else %}
+            <li>No extra skills found.</li>
+            {% endfor %}
+        </ul>
+
+        <h3>Learning Recommendations</h3>
+        {% for item in result.learning_recommendations %}
+            <p><strong>{{ item.skill }}</strong></p>
+            <p>Level: {{ item.level }}</p>
+            <p>Topics: {{ item.topics | join(', ') }}</p>
+            <p>Market presence in dataset: {{ item.market_percentage }}%</p>
+        {% else %}
+            <p>No recommendations available.</p>
+        {% endfor %}
+
+        <h3>Suggested Learning Path</h3>
+        <ol>
+            {% for skill in result.learning_path %}
+            <li>{{ skill }}</li>
+            {% endfor %}
+        </ol>
+    </div>
+    {% endif %}
+
+</div>
+</body>
+</html>
