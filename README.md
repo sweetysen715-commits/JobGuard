@@ -1,5 +1,4 @@
 # JobGuard
-<<<<<<< HEAD
 
 JobGuard is a machine-learning-powered web application that helps job seekers identify potentially fraudulent job postings and analyze resume skill gaps.
 
