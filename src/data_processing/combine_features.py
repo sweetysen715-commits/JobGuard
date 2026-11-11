@@ -6,8 +6,6 @@ from sklearn.compose import ColumnTransformer
 from sklearn.preprocessing import OneHotEncoder, StandardScaler
 from sklearn.feature_extraction.text import TfidfVectorizer
 from scipy.sparse import save_npz
-
-# 1. Load training and testing datasets
 train_data = pd.read_csv(
     "datasets/processed/train_data.csv"
 )
@@ -16,7 +14,6 @@ test_data = pd.read_csv(
     "datasets/processed/test_data.csv"
 )
 
-# 2. Select numerical features
 numerical_columns = [
     "title_length",
     "company_profile_length",
@@ -34,8 +31,6 @@ numerical_columns = [
     "has_company_logo",
     "has_questions"
 ]
-
-# 3. Select categorical features
 categorical_columns = [
     "employment_type",
     "required_experience",
@@ -45,7 +40,6 @@ categorical_columns = [
     "location_grouped"
 ]
 
-# 4. Group rare locations using training data only
 location_counts = train_data["location"].fillna("Unknown").value_counts()
 
 frequent_locations = location_counts[
@@ -69,8 +63,6 @@ test_data["location_grouped"] = (
         "Other"
     )
 )
-
-# 5. Combine text columns
 text_columns = [
     "title",
     "company_profile",
@@ -86,11 +78,9 @@ for column in text_columns:
 train_data["combined_text"] = train_data[text_columns].agg(" ".join, axis=1)
 test_data["combined_text"] = test_data[text_columns].agg(" ".join, axis=1)
 
-# 6. Separate target variable
 y_train = train_data["fraudulent"]
 y_test = test_data["fraudulent"]
 
-# 7. Create preprocessing transformer
 preprocessor = ColumnTransformer(
     transformers=[
         (
@@ -117,13 +107,10 @@ preprocessor = ColumnTransformer(
     ]
 )
 
-# 8. Fit using training data only
 X_train = preprocessor.fit_transform(train_data)
 
-# 9. Transform testing data
 X_test = preprocessor.transform(test_data)
 
-# 10. Save processed features
 save_npz(
     "datasets/processed/X_train.npz",
     X_train
@@ -144,7 +131,6 @@ np.save(
     y_test.to_numpy()
 )
 
-# 11. Display results
 print("Feature combination completed!")
 
 print("\nTraining features shape:", X_train.shape)
